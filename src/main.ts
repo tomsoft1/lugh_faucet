@@ -1,5 +1,7 @@
-import { initEmail, sendEmail } from "./email";
-import { initTezos, transferTo } from "./faucet";
+import { initEmail } from "./email";
+import { initTezos } from "./faucet";
+import { processRequest } from "./processParams";
+
 require('dotenv').config()
 
 const express = require('express')
@@ -7,24 +9,28 @@ const app = express()
 const port = process.env.PORT || 3000
 const path = require('path');
 
-initEmail(process.env.SENDGRID_KEY,process.env.EMAIL_SOURCE)
-initTezos( process.env.LUGH_CONTRACT )
+initEmail(process.env.SENDGRID_KEY, process.env.EMAIL_SOURCE)
+initTezos(process.env.LUGH_CONTRACT,process.env.TEZOS_NODE)
 
-app.use(express.json({extended: false})); 
-app.use(express.urlencoded({extended: true}))
+const defaultAmount = parseInt(process.env.AMOUNT_TRANSFERRED)
 
-app.post('/transfer', async function(req, res) {
+app.use(express.json({ extended: false }));
+app.use(express.urlencoded({ extended: true }))
+app.use(express.static('public'));
+
+app.post('/transfer', async function (req, res) {
   console.log(req.body)
-  let result = await transferTo(req.body.address,parseInt(process.env.AMOUNT_TRANSFERRED))
- // const result="fake"
-  console.log(result)
-  sendEmail(process.env.EMAIL_DEST,req.body.email,req.body.company)
-  res.send(`<html><body><H1>Well done</H1>${process.env.AMOUNT_TRANSFERRED} Lugh transferred to ${req.body.address}</body></html>`);
+  const params = req.body
+  const returnVal = await processRequest(req.body,defaultAmount,process.env.EMAIL_DEST)
+  console.log(returnVal)
+  res.send(returnVal);
+
+
+
 });
 
-// sendFile will go here
-app.get('/', function(req, res) {
-  res.sendFile(path.join( path.join(__dirname, '../public'), '/index.html'));
+app.get('/', function (req, res) {
+  res.sendFile(path.join(path.join(__dirname, '../public'), '/index.html'));
 });
 
 
