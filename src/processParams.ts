@@ -2,6 +2,7 @@
 // No dependyc injection for now...
 import { sendEmail } from "./email";
 import { transferTo } from "./faucet";
+import { validateAddress } from '@taquito/utils'
 
 export async function processRequest(params:any,amount:number,emailDest:string){
     var errors = {} as any
@@ -13,9 +14,12 @@ export async function processRequest(params:any,amount:number,emailDest:string){
     if ((params.email == null) || (params.email.length < 2) || (!params.email.match(validRegex))) {
       errors.email = "Vous devez fournir un email valide"
     }
-    if ((params.address == null) || (params.address.length < 20)) {
-      errors.address = "Vous devez fournir une adresse Tezos"
-    }
+
+      const resultVal = validateAddress(params.address)
+      if(resultVal==0)errors.address = "Problème de préfixe avec l'adresse"
+      if(resultVal==1)errors.address = "Checksum invalide pour l'adresse"
+      if(resultVal==2)errors.address = "Longueur invalide pour l'adresse"
+    
     // Check if there is some errors
     if (Object.keys(errors).length == 0) {
       let result = await transferTo(params.address,amount)
