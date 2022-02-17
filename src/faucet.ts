@@ -53,5 +53,3 @@ export async function transferTo(to: string, in_value: number): Promise<string> 
     )
     .catch((error: Error) => println(`Error: ${JSON.stringify(error, null, 2)}`));
 }
-
-//transferTo('tz1PkCLMLgEzzgbKs7S99R72JrSbhd8zEgsg',1)

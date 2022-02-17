@@ -19,14 +19,9 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.static('public'));
 
 app.post('/transfer', async function (req, res) {
-  console.log(req.body)
-  const params = req.body
   const returnVal = await processRequest(req.body,defaultAmount,process.env.EMAIL_DEST)
   console.log(returnVal)
   res.send(returnVal);
-
-
-
 });
 
 app.get('/', function (req, res) {

@@ -4,14 +4,15 @@
     <meta charset="utf-8">
     <title>LUGH Faucet</title>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <link rel="stylesheet" href="loading.css" />
     <link
       rel="stylesheet"
       href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css"
     />  </head>
   <script>  
 $(document).ready(function () {
-  $("#processing").hide();
-  $("form").submit(function (event) {
+    $("#processing").hide();
+    $("form").submit(function (event) {
     $(".form-group").removeClass("has-error");
     $(".help-block").remove();
     $("#processing").show();
@@ -74,11 +75,11 @@ $(document).ready(function () {
 <container>
 
   <div class="col-sm-6 col-sm-offset-3">
-    <div ><img src="/logo.png" width="200" /></div>
+    <div ><a href="https://fr.lugh.io/"><img src="/logo.png" width="200" /></a></div>
     <div >
       <dd class="col-sm-12">
         <p/>
-        <p>Enter a valid email and your company email, and 100 Lugh will be send to your Tezos account</p>
+        <p>Entrez votre email, ainsi que le nom de votre société, et vous recevrez 100 <a href="https://fr.lugh.io/">Lugh</a> sur votre portefeuille Tezos </p>
       </dd>
   
     </div>
@@ -97,17 +98,17 @@ $(document).ready(function () {
         />
       </div>
       <div id="company-group" class="form-group">
-        <label for="name">Company</label>
+        <label for="name">Société</label>
         <input
           type="text"
           class="form-control"
           id="company"
           name="company"
-          placeholder="your company"
+          placeholder="votre société"
         />
       </div>
       <div id="address-group" class="form-group">
-        <label for="address">Your Wallet address</label>
+        <label for="address">L'adresse de votre portefeuille Tezos</label>
         <input
           type="text"
           class="form-control"
@@ -118,13 +119,14 @@ $(document).ready(function () {
       </div>
 
       <button type="submit" class="btn btn-success">
-        Submit
+        Envoyer
       </button>
     </form>
   </div>
   <div class="col-sm-6 col-sm-offset-3" id="processing" >
-    <H1>Processing...</H1>
-  </div>
+    <H1>Traitement...</H1>
+    <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>  
+    </div>
 </container>
 
 </body>
