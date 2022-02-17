@@ -3,6 +3,9 @@
 import { sendEmail } from "./email";
 import { transferTo } from "./faucet";
 import { validateAddress } from '@taquito/utils'
+import { loggers } from "winston";
+
+const logger = global.logger
 
 export async function processRequest(params:any,amount:number,emailDest:string){
     var errors = {} as any
@@ -24,7 +27,7 @@ export async function processRequest(params:any,amount:number,emailDest:string){
     if (Object.keys(errors).length == 0) {
       let result = await transferTo(params.address,amount)
       // const result = "fake"
-      console.log(result)
+      logger.info(result)
       sendEmail(emailDest,params.email,params.company)
       returnVal = { success: true, data: { address: params.address, amount: amount, result: result } };
   
